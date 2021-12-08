@@ -1,30 +1,69 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app">
+    <div class="footer shadow">
+      <div class="aliniando">
+        <h1>Tienda virutal <b> LA GRANJA </b></h1>
+      </div>
+      <div class="buttons-footer">
+        <button class="btn btn-light">Login</button>
+
+        <button class="btn btn-info">Signup</button>
+      </div>
+    </div>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
-  <router-view/>
 </template>
 
+<script>
+export default {
+  name: "App",
+  data: function () {},
+  methods: {
+    loadLogIn() {
+      this.$router.push({ name: "logIn" });
+    },
+  },
+  created: function () {
+    this.loadLogIn();
+  },
+};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url("https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;300;600&display=swap");
+.footer {
+  display: flex;
+  background: linear-gradient(to right, rgb(58, 57, 57), white);
+  justify-content: space-between;
+  font-family: "Readex Pro", sans-serif;
+  padding: 20px 40px;
+}
+.aliniando{
+      display: flex;
+    align-items: center;
 }
 
-#nav {
-  padding: 30px;
+.footer h1 {
+  color: white;
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.buttons-footer {
+  width: 180px;
+ display: flex;
+    justify-content: space-between;
+  
+}
+.buttons-footer button{
+  margin: 0;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+body {
+  margin: 0;
 }
 </style>
