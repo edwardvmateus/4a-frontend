@@ -3,23 +3,23 @@
         <div class="background"></div>
         <div class="formularioSignup formulario shadow-lg">
             <h3>Registrate Aqui </h3>
-                <form  >
+                <form id="myform2" v-on:submit.prevent="processSignUp">
                     <div class="formFlex">
                         <div class="div-izq" >
-                            <input name="username" class="form-control" type="text" placeholder="USUARIO">
-                            <input name="name" class="form-control" type="text" placeholder="Nombre">
-                            <input name="lastname" class="form-control" type="text" placeholder="Apellido">
+                            <input v-model="credentials.username" name="username" class="form-control" type="text" placeholder="USUARIO">
+                            <input v-model="credentials.first_name" name="name" class="form-control" type="text" placeholder="Nombre">
+                            <input v-model="credentials.last_name" name="lastname" class="form-control" type="text" placeholder="Apellido">
 
-                            <select name="gender" class="form-control">
+                            <select v-model="credentials.gender" name="gender" class="form-control">
                                 <option value="M">Hombre</option> 
                                 <option value="F">Mujer</option>     
                             </select>
                         </div>
                         <div>
-                            <input name="phone"  class="form-control" type="tel" placeholder="Celular" >
-                            <input name="email" class="form-control" type="email" placeholder="Email" multiple>
-                            <input name="password1" class="form-control" type="password" placeholder="Ingresa password" >
-                            <input name="password1" class="form-control" type="password" placeholder="Confirma password" >
+                            <input v-model="credentials.phone_number" name="phone"  class="form-control" type="tel" placeholder="Celular" >
+                            <input v-model="credentials.email" name="email" class="form-control" type="email" placeholder="Email" multiple>
+                            <input v-model="credentials.password1" name="password1" class="form-control" type="password" placeholder="Ingresa password" >
+                            <input v-model="credentials.password2" name="password1" class="form-control" type="password" placeholder="Confirma password" >
                         </div>
                     </div>
                 <button class="btn btn-dark buttonSignup">Ingresar</button>
@@ -29,12 +29,57 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
 export default{
         name: "SignUp",
-        data:function(){},
-        methods:{},
+        data:function(){
+            return{
+                credentials:{
+                    username:"",
+                    first_name:"",
+                    last_name:"",
+                    gender:"",
+                    phone_number:"",
+                    email:"",
+                    password1:"",
+                    password2:""
+                }
+            }
+        },
+        methods:{
+            processSignUp: async function(){
+            console.log("Entrando")
+            await this.$apollo.mutate({
+                mutation: gql`
+                mutation Mutation($credentials: RegisterUserInput!) {
+                    Register(credentials: $credentials) {
+                        key
+                    }
+                }
+                `,
+                variables: {
+                credentials: this.credentials
+                }
+            })
+            .then((result) => {
+
+                document.getElementById('myform2').reset();
+                console.log(result)
+                let dataLogin={
+                    username: this.credentials.username,
+                    token:result.data.Register.key
+                }
+                this.$emit("loginComplete", dataLogin)
+                
+            })
+            .catch((error) => {
+                console.log(error) 
+                alert("Paila");
+            })
+            }
+        },
         created: function(){} 
-    }
+}
 </script>
 
 <style>

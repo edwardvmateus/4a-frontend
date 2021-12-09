@@ -5,35 +5,57 @@
         <h1>Tienda virutal <b> LA GRANJA </b></h1>
       </div>
       <div class="buttons-footer">
-        <button v-on:click="loadLogIn" class="btn btn-light">Login</button>
+        <button v-if="!isAuth" v-on:click="loadLogIn" class="btn btn-light">Login</button>
 
-        <button v-on:click="loadSignUp" class="btn btn-info">Signup</button>
+        <button v-if="!isAuth"  v-on:click="loadSignUp" class="btn btn-info">Signup</button>
+
+        <button v-if="isAuth"  v-on:click="signOut" class="btn btn-info">Cerrar sesion</button>
       </div>
     </div>
     <div>
-      <router-view></router-view>
+      <router-view v-on:loginComplete="loginComplete"></router-view>
     </div>
   </div>
 </template>
 
-<script>
+<script> 
 export default {
   name: "App",
   data: function () {
     return{
-      
+      isAuth:false
     }
   },
   methods: {
+    verifyAuth(){
+      this.isAuth = localStorage.getItem("isAuth") || false;
+      if(this.isAuth){
+        console.log("Pagina de inicio")
+      }else{     
+        console.log("Pagina de Login")
+      }
+    },
     loadLogIn() {
       this.$router.push({ name: "logIn" });
     },
     loadSignUp(){
       this.$router.push({name:"signUp"})
+    },
+    loginComplete(data){
+      this.isAuth=true
+      localStorage.setItem('token',data.token)
+      localStorage.setItem('isAuth', this.isAuth)
+      localStorage.setItem('username',data.username)
+      this.verifyAuth()
+    },
+    signOut(){
+      this.loadLogIn();
+      this.isAuth=false
+      localStorage.clear();
     }
   },
   created: function () {
-    this.loadLogIn();
+    this.verifyAuth();
   },
 };
 </script>

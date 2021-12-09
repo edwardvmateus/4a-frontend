@@ -3,9 +3,10 @@
         <div class="background"></div>
         <div class="formulario shadow-lg">
             <h3>Iniciar sesion </h3>
-            <form v-on:submit.prevent="processLogIn">
+            <form id="myform" v-on:submit.prevent="processLogIn">
                     <input name="username" v-model="credentials.username" class="form-control" type="text" placeholder="Ingrese su usuario">
                     <input name="password" v-model="credentials.password" class="form-control" type="password" placeholder="**************" >
+                    <p v-if="show_error">Usuario o contraseña incorrecta</p>
                 <button class="btn btn-dark">Ingresar</button>
             </form>
         </div>
@@ -19,6 +20,7 @@ import gql from "graphql-tag";
         name: "LogIn",
         data:function(){
             return{
+                show_error:false,
                 credentials:{
                     username:"", 
                     password:""
@@ -42,9 +44,17 @@ import gql from "graphql-tag";
             })
             .then((result) => {
                 console.log(result)
+                document.getElementById('myform').reset();
+                let dataLogin={
+                    username: this.credentials.username,
+                    token:result.data.logIn.key
+                }
+                
+                this.$emit("loginComplete", dataLogin)
                 
             })
             .catch((error) => {
+                this.show_error=true
                 console.log(error) 
             })
             }
@@ -76,6 +86,7 @@ import gql from "graphql-tag";
     margin-right: 20px;
 }
 
+
 .formulario h3{
     text-align: center;
 }
@@ -84,7 +95,11 @@ import gql from "graphql-tag";
     
 }
 
-
+.formulario p{
+        color: red;
+        font-size: 12px;
+        text-align: center;
+}
 
 @media(max-width:426px){
 .formulario{
