@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="singup">
         <div class="background"></div>
         <div class="formularioSignup formulario shadow-lg">
             <h3>Registrate Aqui </h3>
@@ -30,7 +30,7 @@
 
 <script>
 export default{
-        name: "SingUp",
+        name: "SignUp",
         data:function(){},
         methods:{},
         created: function(){} 
@@ -38,6 +38,7 @@ export default{
 </script>
 
 <style>
+#signup
 .background{
     background-image: url("https://images.pexels.com/photos/4054850/pexels-photo-4054850.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
     height: calc(100vh - 78px);
@@ -75,5 +76,20 @@ export default{
     margin-top: 40px;
 
     
+}
+@media(max-width:426px){
+.formularioSignup{
+    width: 400px;
+    padding: 20px 10px;
+    position: absolute;
+    top: 58%;
+    right: -45%;
+}
+.buttonSignup{
+    margin: 20px;
+    margin-left: 80px;
+}
+
+
 }
 </style>

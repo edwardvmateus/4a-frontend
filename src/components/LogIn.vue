@@ -3,9 +3,9 @@
         <div class="background"></div>
         <div class="formulario shadow-lg">
             <h3>Iniciar sesion </h3>
-            <form >
-                    <input name="username" class="form-control" type="text" placeholder="Ingrese su usuario">
-                    <input name="password" class="form-control" type="password" placeholder="**************" >
+            <form v-on:submit.prevent="processLogIn">
+                    <input name="username" v-model="credentials.username" class="form-control" type="text" placeholder="Ingrese su usuario">
+                    <input name="password" v-model="credentials.password" class="form-control" type="password" placeholder="**************" >
                 <button class="btn btn-dark">Ingresar</button>
             </form>
         </div>
@@ -13,10 +13,42 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
+
     export default{
         name: "LogIn",
-        data:function(){},
-        methods:{},
+        data:function(){
+            return{
+                credentials:{
+                    username:"", 
+                    password:""
+                }
+            }
+        },
+        methods: {
+            processLogIn: async function () {
+            console.log("Entrando")
+            await this.$apollo.mutate({
+                mutation: gql`
+                mutation LogIn($credentials: LoginInput!) {
+                    logIn(credentials: $credentials) {
+                        key
+                    }
+                }
+                `,
+                variables: {
+                credentials: this.credentials
+                }
+            })
+            .then((result) => {
+                console.log(result)
+                
+            })
+            .catch((error) => {
+                console.log(error) 
+            })
+            }
+        },
         created: function(){} 
     }
 </script>
@@ -51,4 +83,16 @@
     width: 220px;
     
 }
+
+
+
+@media(max-width:426px){
+.formulario{
+    position: absolute;
+    top: 50%;
+    right: -14%;
+}
+}
+
+
 </style>

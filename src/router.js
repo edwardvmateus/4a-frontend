@@ -6,7 +6,7 @@ import SignUp from '../src/components/SignUp.vue'
 const routes = [
   {
     path: '/',
-    name: 'root',
+    name: 'App',
     component: App
   },
   {

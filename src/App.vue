@@ -5,9 +5,9 @@
         <h1>Tienda virutal <b> LA GRANJA </b></h1>
       </div>
       <div class="buttons-footer">
-        <button class="btn btn-light">Login</button>
+        <button v-on:click="loadLogIn" class="btn btn-light">Login</button>
 
-        <button class="btn btn-info">Signup</button>
+        <button v-on:click="loadSignUp" class="btn btn-info">Signup</button>
       </div>
     </div>
     <div>
@@ -19,11 +19,18 @@
 <script>
 export default {
   name: "App",
-  data: function () {},
+  data: function () {
+    return{
+      
+    }
+  },
   methods: {
     loadLogIn() {
       this.$router.push({ name: "logIn" });
     },
+    loadSignUp(){
+      this.$router.push({name:"signUp"})
+    }
   },
   created: function () {
     this.loadLogIn();

@@ -7,14 +7,16 @@ import {createApolloProvider} from '@vue/apollo-option'
 import {setContext} from 'apollo-link-context'
 
 const httpLink = createHttpLink({
-    url: 'https://api-lagranja.herokuapp.com/'
+    uri: 'https://api-lagranja.herokuapp.com/',
 })
 
 const authLink = setContext((_, {headers}) =>{
     return {
         headers:{
-            ...headers,
-            "Authorization": localStorage.getItem("token_access") ||""
+            "Access-Control-Allow-Origin": "*",
+            "Authorization": localStorage.getItem("token") ||"",
+            ...headers
+            
         }
     }
 })
@@ -28,4 +30,4 @@ const apolloProvider = new createApolloProvider({
     defaultClient: apolloClient
 })
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(router).use(apolloProvider).mount('#app')
