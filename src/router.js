@@ -6,21 +6,21 @@ import SignUp from '../src/components/SignUp.vue'
 const routes = [
   {
     path: '/',
-    name: 'App',
-    component: App
+    name: 'root',
+    component: App,
+    
   },
   {
     path: '/user/login',
     name: 'logIn',
-    component: LogIn
+    component: LogIn,
   },
   {
     path: '/user/signup',
     name: 'signUp',
-    component: SignUp
+    component: SignUp,
   }
-  
-  
+    
 ]
 
 const router = createRouter({
